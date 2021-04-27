@@ -9,7 +9,7 @@ xc, yc, r1 = 5, -2, 10
 ex, ey= 0.5, 0.5
 dy=np.array(N*[ey])
 dx=np.array(N*[ex])
-dr=(dx**2 + dy**2)
+dr=np.sqrt(dx**2 + dy**2)
 
 phi =2*np.pi*np.random.uniform(0, 1, N)
 x = xc + r1*np.cos(phi)
