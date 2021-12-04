@@ -21,9 +21,9 @@ def onclick(event):
 
     x=event.xdata
     y=event.ydata
-    print('x=%f, y=%f' %(x, y)) #stampa i dati sulla schell
+    print('x=%f, y=%f' %(x, y)) #stampa i dati sulla shell
 
-    file.write(str(x)) #scrive i dati sul file belli printi per essere letti da codice del fit
+    file.write(str(x)) #scrive i dati sul file belli pronti per essere letti da codice del fit
     file.write('\t')
     file.write(str(y))
     file.write('\n')
