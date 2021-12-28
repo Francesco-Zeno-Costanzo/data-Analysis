@@ -21,6 +21,8 @@ y=y+k #aggiungo errore
 x=x+l
 
 def f(x, A, o, f, v):
+    '''funzione modello
+    '''
     return A*np.sin(o*x + f)+v
 
 
@@ -39,7 +41,7 @@ print('v  = %.5f +- %.5f ' % (pars[3], np.sqrt(covm.diagonal()[3])))
 #Calcoliamo il chi quadro,indice ,per quanto possibile, della bontà del fit:
 chisq = sum(((y - f(x, *pars))/dy)**2.)
 ndof = len(y) - len(pars)
-print('chi quadro = %.3f (%d dof)' % (chisq, ndof))
+print(f'chi quadro = {chisq:.3f} ({ndof:d} dof)')
 
 
 #Definiamo un matrice di zeri che divverà la matrice di correlazione:
@@ -78,8 +80,8 @@ frame2.set_ylabel('Residui Normalizzati')
 plt.xlabel('tempo [u.a.]',fontsize=10)
 #plt.ticklabel_format(axis = 'both', style = 'sci', scilimits = (0,0))
 
-x1=np.linspace(np.min(x),np.max(x), 1000)
-plt.plot(x1, 0*x1, color='red', linestyle='--', alpha=0.5) #grafico la retta costantemente zero
+
+plt.plot(t, 0*t, color='red', linestyle='--', alpha=0.5) #grafico la retta costantemente zero
 plt.plot(x, ff, '.', color='black') #grafico i residui normalizzati
 plt.grid()
 
