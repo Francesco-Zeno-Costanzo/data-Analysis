@@ -1,7 +1,7 @@
 import pylab as pl
 import numpy as np
 import matplotlib.pyplot as plt
-x, y= np.loadtxt(r'C:\Users\franc\Desktop\datiL\datiL2\datilpf2\dls.txt', unpack = True)
+x, y= np.loadtxt(r'C:\Users\franc\Documents\datiL\datiL2\datilpf2\dls.txt', unpack = True)
 
 
 
