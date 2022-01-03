@@ -4,19 +4,23 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 #Importiamo i dati (va inserito il path assoluto per permettere di trovare) e definiamo la funzione di fit:
-x, y= np.loadtxt(r'C:\Users\franc\Desktop\DatiL\datiL2\datilpf2\datiardu3.txt', unpack = True)
+x, y= np.loadtxt(r'C:\Users\franc\Documents\DatiL\datiL2\datilpf2\datiardu3.txt', unpack = True)
 
 dy=np.array(len(y)*[1])
 def f(x, a, c, f1, w_t):
+
     def ps(x, k,f,A, phi):
         return A*(2/(k*np.pi))*(np.sin((2*np.pi*f1*k*x+phi)))
+
     xx=np.linspace(np.min(x)-676, np.max(x), len(x))
     B=np.zeros(len(xx))
+
     for i in range (0,20000):
         k=2*i+1
         A=1/(np.sqrt(1+((2*np.pi*f1*k)/w_t)**2))
         phi=np.arctan(-(2*np.pi*f1*k)/w_t)
         B=B+ps(xx,k,f,A,phi)
+
     return a*B+c
 
 #definiamo un array di parametri iniziali contenente i volori numerici che ci si aspetta il fit restituisca, per aiutare la convergenza dello stesso:
