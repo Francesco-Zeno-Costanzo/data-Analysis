@@ -41,7 +41,9 @@ def f(k, media):
 
 popt, cov = curve_fit(f, centro_bin, entrate)
 
-print(f"media = {popt[0]} +- {cov[0,0]}")
+media = popt[0]
+dmedia = np.sqrt(cov[0,0])
+print(f"media = {media} +- {dmedia}")
 
 plt.figure(1)
 plt.title('fit di una poissoniana', fontsize=15)
