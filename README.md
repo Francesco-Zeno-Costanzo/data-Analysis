@@ -9,6 +9,8 @@ fft(sim-real).py calculates the fft of a simulated and a real sine wave signal
 
 fit cerchio.py returns the fit of a circumference (uses the coope method)
 
+fit ellisse.py returns the fit of a ellipse (based on Halir and Flusser article)
+
 fit fourier.py Use Fourier series to fit a function (shark fin wave)
 
 fit generico.py is a code for a generic fit
