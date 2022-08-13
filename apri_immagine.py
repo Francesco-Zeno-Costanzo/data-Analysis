@@ -1,13 +1,11 @@
 import matplotlib as mp
 import matplotlib.pyplot as plt
 
-'''
-nel primo path ci vogliono i \\ perchè lo chiede la funzione per aprire il file.
-il file txt su cui scrivere se non esiste lo crea lui
-'''
 
-path_dati =r"C:\\Users\\franc\\Desktop\\dati0.txt"
-path_img = r"C:\Users\franc\Desktop\DatiL\datiL3\FIS2\eOverm\DSC_0005.jpg"
+#il file txt su cui scrivere se non esiste viene creato automaticamente
+
+path_dati = "C:\\Users\\franc\\Desktop\\dati0.txt"
+path_img = "C:\\Users\\franc\\Documents\\DatiL\\datiL3\\FIS2\\eOverm\\DSC_0005.jpg"
 
 fig, ax = plt.subplots()
 
@@ -17,13 +15,15 @@ ax.imshow(img)
 
 
 def onclick(event):
-    file= open(path_dati, "a") #apre file, il permesso è a altrimenti sovrascriverebbe i dati
+    #apre file, il permesso è a altrimenti sovrascriverebbe i dati
+    file= open(path_dati, "a")
 
     x=event.xdata
     y=event.ydata
     print('x=%f, y=%f' %(x, y)) #stampa i dati sulla shell
 
-    file.write(str(x)) #scrive i dati sul file belli pronti per essere letti da codice del fit
+    #scrive i dati sul file belli pronti per essere letti da codice del fit
+    file.write(str(x))
     file.write('\t')
     file.write(str(y))
     file.write('\n')
