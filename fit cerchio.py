@@ -1,25 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
 
-#x, y= np.loadtxt(r'C:\Users\franc\Desktop\datiL\DatiL3\....txt', unpack = True)
 
-N=50
-xc, yc, r1 = 5, -2, 10
-ex, ey= 0.5, 0.5
-dy = np.array(N*[ey])
-dx = np.array(N*[ex])
-dr = np.sqrt(dx**2 + dy**2)
+def cerchio(xc, yc, r, N, phi_min=0, phi_max=2*np.pi):
+    """
+    Restituisce un cerchio di centro (xc, yc) e di raggio r
+    phi è il parametro di "percorrenza" del cerchio
+    """
 
-phi = 2*np.pi*np.random.uniform(0, 1, N)
-x = xc + r1*np.cos(phi)
-y = yc + r1*np.sin(phi)
-k = np.random.uniform(0, ex, N)
-l = np.random.uniform(0, ey, N)
-x = x + k #aggiungo errore
-y = y + l
+    phi = np.linspace(phi_min, phi_max, N)
 
-a=np.array([x, y])
+    x = xc + r*np.cos(phi)
+    y = yc + r*np.sin(phi)
+
+    return x, y
+
+
 
 def fitcerchio(pt):
     '''
@@ -58,45 +54,64 @@ def fitcerchio(pt):
         d[i] = np.sqrt(A1[i,i])
     return c, r, d, A1
 
-c, r, d , A= fitcerchio(a)
 
-print('x_c = %.5f +- %.5f ' % (c[0], d[0]))
-print('y_c = %.5f +- %.5f ' % (c[1], d[1]))
-print('r   = %.5f +- %.5f ' % (r,    d[2]))
+if __name__ == "__main__":
+    #numero di punti
+    N = 50
+    #paramentri cerchio
+    xc, yc, r1 = 5, -2, 10
+    #errori
+    ex, ey= 0.5, 0.5
+    dy = np.array(N*[ey])
+    dx = np.array(N*[ex])
+    dr = np.sqrt(dx**2 + dy**2)
+    k = np.random.uniform(0, ex, N)
+    l = np.random.uniform(0, ey, N)
+    #creiamo il cerchio
+    x, y = cerchio(xc, yc, r1, N, np.pi/4, 5/3*np.pi)
+    x = x + k #aggiungo errore
+    y = y + l
 
-chisq = sum(((np.sqrt((x-c[0])**2 + (y-c[1])**2) - r)/dr)**2.)
-ndof = N - 3
-print(f'chi quadro = {chisq:.3f} ({ndof:d} dof)')
+    a = np.array([x, y])
+    c, r, d , A = fitcerchio(a) #fit
 
-corr=np.zeros((3,3))
-for i in range(0, 3):
-    for j in range(0, 3):
-       corr[i][j]=(A[i][j])/(np.sqrt(A.diagonal()[i])*np.sqrt(A.diagonal()[j]))
-print(corr)
-
-fig1 = plt.figure(1, figsize=(7.5,9.3))
-frame1=fig1.add_axes((.1,.35,.8,.6))
-#frame1=fig1.add_axes((trasla lateralmente, trasla verticamente, larghezza, altezza))
-frame1.set_title('Fit dati simulati',fontsize=20)
-plt.ylabel('y [a.u]',fontsize=10)
-plt.grid()
-
-tt=np.linspace(0, 2*np.pi, 10000)
-plt.errorbar(x, y, dy, dx, fmt='.', color='black', label='dati')
-xx = c[0] + r*np.cos(tt)
-yy = c[1] + r*np.sin(tt)
-plt.plot(xx, yy, color='blue', alpha=0.5, label='best fit')
-plt.legend(loc='best')
+    print(f'x_c = {c[0]:.5f} +- {d[0]:.5f}; valore esatto={xc:.5f}')
+    print(f'y_c = {c[1]:.5f} +- {d[1]:.5f}; valore esatto={yc:.5f}')
+    print(f'r   = {r:.5f} +- {d[2]:.5f}; valore esatto={r1:.5f}')
 
 
-frame2=fig1.add_axes((.1,.1,.8,.2))
-frame2.set_ylabel('Residui Normalizzati')
-plt.xlabel('x [a.u.]',fontsize=10)
+    chisq = sum(((np.sqrt((x-c[0])**2 + (y-c[1])**2) - r)/dr)**2.)
+    ndof = N - 3
+    print(f'chi quadro = {chisq:.3f} ({ndof:d} dof)')
 
-ff=(np.sqrt((x-c[0])**2 + (y-c[1])**2) - r)/dr
-x1=np.linspace(np.min(x),np.max(x), 1000)
-plt.plot(x1, 0*x1, color='red', linestyle='--', alpha=0.5)
-plt.plot(x, ff, '.', color='black')
-plt.grid()
+    corr=np.zeros((3,3))
+    for i in range(0, 3):
+        for j in range(0, 3):
+            corr[i][j]=(A[i][j])/(np.sqrt(A.diagonal()[i])*np.sqrt(A.diagonal()[j]))
+    print(corr)
 
-plt.show()
+    #plot
+    fig1 = plt.figure(1, figsize=(7.5,9.3))
+    frame1=fig1.add_axes((.1,.35,.8,.6))
+    #frame1=fig1.add_axes((trasla lateralmente, trasla verticamente, larghezza, altezza))
+    frame1.set_title('Fit dati simulati',fontsize=20)
+    plt.ylabel('y [a.u]',fontsize=10)
+    plt.grid()
+
+    plt.errorbar(x, y, dy, dx, fmt='.', color='black', label='dati')
+    xx, yy = cerchio(c[0], c[1], r, 10000)
+    plt.plot(xx, yy, color='blue', alpha=0.5, label='best fit')
+    plt.legend(loc='best')
+
+
+    frame2=fig1.add_axes((.1,.1,.8,.2))
+    frame2.set_ylabel('Residui Normalizzati')
+    plt.xlabel('x [a.u.]',fontsize=10)
+
+    ff=(np.sqrt((x-c[0])**2 + (y-c[1])**2) - r)/dr
+    x1=np.linspace(np.min(x),np.max(x), 1000)
+    plt.plot(x1, 0*x1, color='red', linestyle='--', alpha=0.5)
+    plt.plot(x, ff, '.', color='black')
+    plt.grid()
+
+    plt.show()

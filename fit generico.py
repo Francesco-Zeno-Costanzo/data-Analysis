@@ -4,31 +4,35 @@ from scipy.optimize import curve_fit
 
 #Importiamo i dati (va inserito il path assoluto per permettere di trovare) e definiamo la funzione di fit:
 #x, y= np.loadtxt(r'C:\Users\franc\Desktop\datiL\DatiL2\onda.txt', unpack = True)
-N=500
-ex, ey= 0.1, 1
-dy=np.array(N*[ey])
-dx=np.array(N*[ex])
-x=np.linspace(0, 50, N)
+N = 500
+ex, ey = 0.1, 1
+dy = np.array(N*[ey])
+dx = np.array(N*[ex])
+x = np.linspace(0, 50, N)
 
-A1=20
-o1=2
-phi=np.pi/4
-v1=30
-y = A1*np.sin(o1*x + phi)+v1
-k=np.random.uniform(0, ey, N)
-l=np.random.uniform(0, ex, N)
-y=y+k #aggiungo errore
-x=x+l
+A1 = 20
+o1 = 2
+v1 = 30
+phi = np.pi/4
+
+y = A1*np.sin(o1*x + phi) + v1
+k = np.random.uniform(0, ey, N)
+l = np.random.uniform(0, ex, N)
+y = y + k #aggiungo errore
+x = x + l
 
 def f(x, A, o, f, v):
     '''funzione modello
     '''
-    return A*np.sin(o*x + f)+v
+    return A*np.sin(o*x + f) + v
 
-
-#definiamo un array di parametri iniziali contenente i volori numerici che ci si aspetta il fit restituisca, per aiutare la convergenza dello stesso:
-#init=np.array([A, o, f, v])
-init=np.array([25, 2.1, 3, 29])
+"""
+definiamo un array di parametri iniziali contenente
+i volori numerici che ci si aspetta il fit restituisca,
+per aiutare la convergenza dello stesso:
+init = np.array([A, o, f, v])
+"""
+init = np.array([25, 2.1, 3, 29])
 
 
 #Eseguiamo il fit e stampiamo i risultati:
@@ -49,7 +53,7 @@ c=np.zeros((len(pars),len(pars)))
 #Calcoliamo le correlazioni e le inseriamo nella matrice:
 for i in range(0, len(pars)):
     for j in range(0, len(pars)):
-       c[i][j]=(covm[i][j])/(np.sqrt(covm.diagonal()[i])*np.sqrt(covm.diagonal()[j]))
+       c[i][j] = (covm[i][j])/(np.sqrt(covm.diagonal()[i])*np.sqrt(covm.diagonal()[j]))
 print(c) #matrice di correlazione
 
 
@@ -65,8 +69,8 @@ plt.grid()
 
 
 plt.errorbar(x, y, dy, dx, fmt='.', color='black', label='dati') #grafico i punti
-t=np.linspace(np.min(x),np.max(x), 10000)
-s=f(t, *pars)
+t = np.linspace(np.min(x),np.max(x), 10000)
+s = f(t, *pars)
 plt.plot(t,s, color='blue', alpha=0.5, label='best fit') #grafico del best fit
 plt.legend(loc='best')#inserisce la legenda nel posto migliorte
 
@@ -75,7 +79,7 @@ plt.legend(loc='best')#inserisce la legenda nel posto migliorte
 frame2=fig1.add_axes((.1,.1,.8,.2))
 
 #Calcolo i residui normalizzari
-ff=(y-f(x, *pars))/dy
+ff = (y-f(x, *pars))/dy
 frame2.set_ylabel('Residui Normalizzati')
 plt.xlabel('tempo [u.a.]',fontsize=10)
 #plt.ticklabel_format(axis = 'both', style = 'sci', scilimits = (0,0))
